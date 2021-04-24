@@ -104,6 +104,10 @@ namespace :redmine_update_reminder do
                     oldest_status_date > journal.created_on
                   RemindingMailer.reminder_status_email(issue.assigned_to, issue, 
                     journal.created_on).deliver_now
+                  if issue.author.id != issue.assigned_to.id
+                    RemindingMailer.reminder_status_email(issue.author, issue, 
+                      journal.created_on).deliver_now
+                  end
                   mailed_issue_ids << issue.id
                   break
                 end
@@ -129,6 +133,9 @@ namespace :redmine_update_reminder do
 
         issues.find_each do |issue|       
           RemindingMailer.reminder_issue_email(issue.assigned_to, issue, issue.updated_on).deliver_now
+          if issue.author.id != issue.assigned_to.id
+            RemindingMailer.reminder_issue_email(issue.author, issue, issue.updated_on).deliver_now
+          end
           mailed_issue_ids << issue.id
         end
       end      
