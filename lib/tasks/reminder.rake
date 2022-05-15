@@ -146,13 +146,13 @@ namespace :redmine_update_reminder do
   task send_user_reminders: :environment do
     open_issue_status_ids = IssueStatus.where(is_closed: false).pluck('id')
     remind_group = Setting.plugin_redmine_update_reminder['remind_group']        
-    users = Group.includes(:users).find(remind_group).users
+    users = Group.includes(:users).find(remind_group).users.active
     
     users.find_each do |user|
       mailed_issue_ids = Set.new
       send_user_tracker_reminders(open_issue_status_ids, user, mailed_issue_ids)
       send_user_status_reminders(open_issue_status_ids, user, mailed_issue_ids)
-      send_user_past_due_issues_reminders(open_issue_status_ids, user, mailed_issue_ids)
+      # send_user_past_due_issues_reminders(open_issue_status_ids, user, mailed_issue_ids)
       send_user_issue_estimates_reminders(open_issue_status_ids, user, mailed_issue_ids)
     end
   end
