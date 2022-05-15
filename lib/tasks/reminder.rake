@@ -44,7 +44,12 @@ namespace :redmine_update_reminder do
 
         updated_since = update_duration.days.ago
         issues = Issue.where(tracker_id: tracker.id, assigned_to_id: user.id, status_id: issue_status_ids).
-          where('updated_on < ?', updated_since).where.not(id: mailed_issue_ids.to_a)
+          where('updated_on < ?', updated_since).where.not(id: mailed_issue_ids.to_a).
+          or(Issue.where(tracker_id: tracker.id, author_id: user.id,
+                         status_id: issue_status_ids).
+              where('updated_on < ?', updated_since).
+              where.not(id: mailed_issue_ids.to_a)).
+          distinct
 
         issues.find_each do |issue|
           issues_with_updated_since << [issue, issue.updated_on]
@@ -65,7 +70,11 @@ namespace :redmine_update_reminder do
 
           oldest_status_date = update_duration.days.ago
           issues = Issue.where(tracker_id: tracker.id, assigned_to_id: user.id, status_id: issue_status_id).
-            where.not(id: mailed_issue_ids.to_a)
+            where.not(id: mailed_issue_ids.to_a).
+            or(Issue.where(tracker_id: tracker.id, author_id:
+                           user.id, status_id: issue_status_id).
+                where.not(id: mailed_issue_ids.to_a)).
+            distinct
 
           issues.find_each do |issue|       
             issue.journals.each do |journal|
