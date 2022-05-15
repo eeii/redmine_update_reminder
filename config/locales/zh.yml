@@ -1,0 +1,7 @@
+# Chinese strings go here for Rails i18n
+zh:
+  update_reminder:
+    issue_tracker_update_required: '%{user_name} - 跟踪 - %{issue_count} 个工作项需要更新进展!'
+    issue_status_update_required: '%{user_name} - %{issue_count} 个工作项需要更新状态!'
+    past_due_issue_update_required: '%{user_name} - Past Due - Missing update on %{issue_count} issues!'
+    issue_estimate_required: '%{user_name} - Missing estimates on %{issue_count} issues!'
