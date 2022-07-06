@@ -153,6 +153,7 @@ namespace :redmine_update_reminder do
   end
   
   task send_user_reminders: :environment do
+    set_language_if_valid Setting.default_language
     open_issue_status_ids = IssueStatus.where(is_closed: false).pluck('id')
     remind_group = Setting.plugin_redmine_update_reminder['remind_group']        
     users = Group.includes(:users).find(remind_group).users.active
