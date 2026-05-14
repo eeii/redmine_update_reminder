@@ -7,12 +7,12 @@
   <%issue, updated_since = issue_with_updated_since%>
   <li>
     <%= link_to_issue(issue, project: true, only_path: false) %>
-    has not been updated for <strong><%=time_ago_in_words(updated_since)%></strong>.     
+    已经 <strong><%=time_ago_in_words(updated_since)%></strong> 没有更新进展了。
   </li>
 <% end -%>
 </ul>
 
-Immediate attention is required.
+需要立即关注。
 
 <br/>
 <%=  Setting.plugin_redmine_update_reminder['footer'] %>
